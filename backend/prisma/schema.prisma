@@ -1,0 +1,323 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Program {
+  id          Int      @id @default(autoincrement())
+  category    String   @db.VarChar(100)
+  title       String   @db.VarChar(200)
+  description String   @db.Text
+  features    Json
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("programs")
+}
+
+model Trainer {
+  id            Int      @id @default(autoincrement())
+  name          String   @db.VarChar(200)
+  email         String   @unique @db.VarChar(200)
+  phone         String?  @db.VarChar(50)
+  specialty     String   @db.VarChar(200)
+  type          String   @db.VarChar(100) // yoga, strength, cardio, crossfit, pilates, etc
+  isFeatured    Boolean  @default(false) @map("is_featured")
+  imageUrl      String   @map("image_url") @db.Text
+  bio           String?  @db.Text
+  experience    Int?     // years of experience
+  certifications Json?   // array of certifications
+  specialties   Json?    // array of specialties
+  status        String   @default("active") @db.VarChar(50)
+  joinDate      DateTime @default(now()) @map("join_date")
+  salary        Decimal? @db.Decimal(10, 2)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  classes       Class[]
+
+  @@map("trainers")
+}
+
+model Membership {
+  id          Int      @id @default(autoincrement())
+  name        String   @db.VarChar(100)
+  price       Decimal  @db.Decimal(10, 2)
+  features    Json
+  isPopular   Boolean  @default(false) @map("is_popular")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("memberships")
+}
+
+model Plan {
+  id              Int      @id @default(autoincrement())
+  name            String   @db.VarChar(200)
+  durationMonths  Int      @map("duration_months")
+  cost            Decimal  @db.Decimal(10, 2)
+  description     String?  @db.Text
+  allowedClasses  Json     @map("allowed_classes") // array of class IDs that this plan allows access to
+  status          String   @default("active") @db.VarChar(50)
+  features        Json?    // additional features/benefits
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  enrollments     Enrollment[]
+
+  @@map("plans")
+}
+
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  rating    Int
+  content   String   @db.Text
+  author    String   @db.VarChar(200)
+  role      String?  @db.VarChar(200) // e.g., "Member since 2023", "Fitness Enthusiast"
+  image     String?  @db.Text // URL or path to image
+  featured  Boolean  @default(false) // Show on landing page
+  approved  Boolean  @default(true) // Admin approval required
+  email     String?  @db.VarChar(200) // Optional contact email
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("testimonials")
+}
+
+model ContactForm {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(200)
+  email     String   @db.VarChar(200)
+  message   String?  @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_forms")
+}
+
+model Stats {
+  id              Int      @id @default(autoincrement())
+  members         Int      @default(0)
+  coaches         Int      @default(0)
+  classesPerWeek  Int      @default(0) @map("classes_per_week")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("stats")
+}
+
+model Gallery {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(200)
+  imageUrl    String   @map("image_url") @db.Text
+  category    String   @db.VarChar(100) // gym, training, events, facilities, etc
+  isFeatured  Boolean  @default(false) @map("is_featured")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("gallery")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  TRAINER
+  ACCOUNTANT
+  MAINTENANCE
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique @db.VarChar(200)
+  password     String   @db.VarChar(255)
+  name         String   @db.VarChar(200)
+  role         Role     @default(ADMIN)
+  profileImage String?  @map("profile_image") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Member {
+  id                Int          @id @default(autoincrement())
+  name              String       @db.VarChar(200)
+  email             String       @unique @db.VarChar(200)
+  phone             String       @db.VarChar(50)
+  status            String       @default("active") @db.VarChar(50)
+  joinDate          DateTime     @default(now()) @map("join_date")
+  expiryDate        DateTime?    @map("expiry_date")
+  address           String?      @db.Text
+  emergencyContact  String?      @map("emergency_contact") @db.VarChar(50)
+  notes             String?      @db.Text
+  createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
+
+  payments          Payment[]
+  enrollments       Enrollment[]
+  memberClasses     MemberClass[]
+
+  @@map("members")
+}
+
+model Class {
+  id            Int           @id @default(autoincrement())
+  name          String        @db.VarChar(200)
+  description   String?       @db.Text
+  trainerId     Int           @map("trainer_id")
+  schedule      String        @db.VarChar(100)
+  day           String        @db.VarChar(20)
+  time          String        @db.VarChar(50)
+  duration      Int
+  capacity      Int
+  enrolled      Int           @default(0)
+  createdAt     DateTime      @default(now()) @map("created_at")
+  updatedAt     DateTime      @updatedAt @map("updated_at")
+
+  trainer       Trainer       @relation(fields: [trainerId], references: [id])
+  memberClasses MemberClass[]
+
+  @@map("classes")
+}
+
+model Equipment {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(200)
+  category     String   @db.VarChar(100)
+  quantity     Int
+  condition    String   @db.VarChar(50)
+  lastMaintenance DateTime? @map("last_maintenance")
+  nextMaintenance DateTime? @map("next_maintenance")
+  purchaseDate DateTime? @map("purchase_date")
+  cost         Decimal? @db.Decimal(10, 2)
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("equipment")
+}
+
+model Payment {
+  id              Int        @id @default(autoincrement())
+  memberId        Int?       @map("member_id")
+  enrollmentId    Int?       @map("enrollment_id")
+  amount          Decimal    @db.Decimal(10, 2)
+  paymentDate     DateTime   @default(now()) @map("payment_date")
+  paymentMethod   String     @db.VarChar(50) @map("payment_method")
+  status          String     @default("pending") @db.VarChar(50) // pending, completed, failed
+  description     String?    @db.Text
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+
+  member          Member?    @relation(fields: [memberId], references: [id])
+  enrollment      Enrollment? @relation(fields: [enrollmentId], references: [id])
+
+  @@map("payments")
+}
+
+model Staff {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.VarChar(200)
+  email        String   @unique @db.VarChar(200)
+  phone        String   @db.VarChar(50)
+  role         String   @db.VarChar(100)
+  salary       Decimal  @db.Decimal(10, 2)
+  joinDate     DateTime @default(now()) @map("join_date")
+  address      String?  @db.Text
+  emergencyContact String? @map("emergency_contact") @db.VarChar(50)
+  status       String   @default("active") @db.VarChar(50)
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("staff")
+}
+
+model Enrollment {
+  id          Int      @id @default(autoincrement())
+  memberId    Int      @map("member_id")
+  planId      Int      @map("plan_id")
+  startDate   DateTime @default(now()) @map("start_date")
+  endDate     DateTime @map("end_date")
+  totalCost   Decimal  @db.Decimal(10, 2) @map("total_cost")
+  status      String   @default("active") @db.VarChar(50) // active, expired, cancelled
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  member      Member   @relation(fields: [memberId], references: [id])
+  plan        Plan     @relation(fields: [planId], references: [id])
+  payments    Payment[]
+  memberClasses MemberClass[]
+
+  @@map("enrollments")
+}
+
+model MemberClass {
+  id            Int        @id @default(autoincrement())
+  memberId      Int        @map("member_id")
+  classId       Int        @map("class_id")
+  enrollmentId  Int        @map("enrollment_id")
+  enrolledDate  DateTime   @default(now()) @map("enrolled_date")
+  status        String     @default("active") @db.VarChar(50) // active, dropped, completed
+  createdAt     DateTime   @default(now()) @map("created_at")
+  updatedAt     DateTime   @updatedAt @map("updated_at")
+
+  member        Member     @relation(fields: [memberId], references: [id])
+  class         Class      @relation(fields: [classId], references: [id])
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+
+  @@unique([memberId, classId, enrollmentId])
+  @@map("member_classes")
+}
+
+model SiteSettings {
+  id                Int      @id @default(autoincrement())
+  siteName          String   @default("PulseFit") @map("site_name") @db.VarChar(200)
+  siteTagline       String   @default("Transform Your Body, Transform Your Life") @map("site_tagline") @db.VarChar(300)
+  
+  // Color scheme
+  primaryColor      String   @default("#dc2626") @map("primary_color") @db.VarChar(20)
+  secondaryColor    String   @default("#991b1b") @map("secondary_color") @db.VarChar(20)
+  accentColor       String   @default("#fbbf24") @map("accent_color") @db.VarChar(20)
+  
+  // Hero section
+  heroTitle         String   @default("Transform Your Body") @map("hero_title") @db.VarChar(300)
+  heroSubtitle      String   @default("Join PulseFit today and start your fitness journey with expert trainers") @map("hero_subtitle") @db.Text
+  heroButtonText    String   @default("Get Started") @map("hero_button_text") @db.VarChar(50)
+  
+  // About section
+  aboutTitle        String   @default("Why Choose PulseFit?") @map("about_title") @db.VarChar(300)
+  aboutDescription  String   @default("We offer world-class facilities, expert trainers, and a supportive community") @map("about_description") @db.Text
+  
+  // Contact information
+  contactEmail      String   @default("info@pulsefit.com") @map("contact_email") @db.VarChar(200)
+  contactPhone      String   @default("+1 (555) 123-4567") @map("contact_phone") @db.VarChar(50)
+  contactAddress    String   @default("123 Fitness Street, Workout City, WC 12345") @map("contact_address") @db.Text
+  
+  // Map location
+  mapLatitude       String   @default("40.7128") @map("map_latitude") @db.VarChar(50)
+  mapLongitude      String   @default("-74.0060") @map("map_longitude") @db.VarChar(50)
+  // Optional: direct Google Maps embed URL (preferred for embedding a specific place)
+  mapEmbedUrl       String?  @map("map_embed_url") @db.Text
+  mapZoom           Int      @default(15) @map("map_zoom")
+  
+  // Social media links
+  facebookUrl       String?  @map("facebook_url") @db.Text
+  instagramUrl      String?  @map("instagram_url") @db.Text
+  twitterUrl        String?  @map("twitter_url") @db.Text
+  youtubeUrl        String?  @map("youtube_url") @db.Text
+  
+  // Business hours
+  businessHours     Json?    @map("business_hours") // {monday: "6AM-10PM", tuesday: "6AM-10PM", ...}
+  
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("site_settings")
+}

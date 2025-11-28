@@ -1,0 +1,1401 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Fitness Pro - Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <span class="logo-text">Elite Fitness Pro</span>
+            </div>
+            <nav class="nav">
+                <button class="nav-btn active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" data-section="members">
+                    <i class="fas fa-users"></i>
+                    <span>Members</span>
+                </button>
+                <button class="nav-btn" data-section="classes">
+                    <i class="fas fa-calendar"></i>
+                    <span>Classes</span>
+                </button>
+                <button class="nav-btn" data-section="equipment">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Equipment</span>
+                </button>
+                <button class="nav-btn" data-section="payments">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Payments</span>
+                </button>
+                <button class="nav-btn" data-section="staff">
+                    <i class="fas fa-user-tie"></i>
+                    <span>Staff</span>
+                </button>
+                <button class="nav-btn" data-section="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </button>
+            </nav>
+            <div class="user-profile">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <span class="profile-name">Admin User</span>
+                    <span class="profile-role">Administrator</span>
+                </div>
+            </div>
+        </div>
+    </header>
+<!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="dashboard-header">
+                <div class="header-info">
+                    <h1>Dashboard</h1>
+                    <p class="header-subtitle">Welcome back, here's what's happening today</p>
+                </div>
+                <div class="header-controls">
+                    <div class="date-control">
+                        <i class="fas fa-calendar"></i>
+                        <input type="date" id="dashboardDate" value="2024-01-15">
+                    </div>
+                    <button class="refresh-btn" onclick="updateDashboardData()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon members">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Members</h3>
+                        <span class="stat-number">1,247</span>
+                        <p class="stat-label">Active subscribers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon checkins">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>5%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Today's Check-ins</h3>
+                        <span class="stat-number">287</span>
+                        <p class="stat-label">Visitors today</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon revenue">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-trend positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Monthly Revenue</h3>
+                        <span class="stat-number">$45,820</span>
+                        <p class="stat-label">This month</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon bookings">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-trend negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>3%</span>
+                        </div>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Class Bookings</h3>
+                        <span class="stat-number">156</span>
+                        <p class="stat-label">This week</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts and Activities -->
+            <div class="main-grid">
+                <!-- Charts Container -->
+                <div class="charts-section">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Member Check-ins</h3>
+                            <span class="chart-period">Last 7 days</span>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="checkinsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Revenue Overview</h3>
+                            <span class="chart-period">Last 6 months</span>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activities -->
+                <div class="activities-section">
+                    <div class="activity-card">
+                        <div class="activity-header">
+                            <h3>Recent Activities</h3>
+                            <button class="view-all-btn">View All</button>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-text"><strong>John Smith</strong> joined as premium member</p>
+                                    <span class="activity-time">2 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Payment received from <strong>Sarah Johnson</strong></p>
+                                    <span class="activity-time">15 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Yoga class booked by <strong>Mike Wilson</strong></p>
+                                    <span class="activity-time">32 minutes ago</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-avatar">
+                                    <i class="fas fa-wrench"></i>
+                                </div>
+                                <div class="activity-content">
+                                    <p class="activity-text">Equipment maintenance completed</p>
+                                    <span class="activity-time">1 hour ago</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Members Section -->
+        <section id="members" class="content-section">
+            <div class="section-header">
+                <div class="header-info">
+                    <h1>Members</h1>
+                    <p class="header-subtitle">Manage gym members and memberships</p>
+                </div>
+                <button class="primary-btn" onclick="showAddMemberModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Member</span>
+                </button>
+            </div>
+
+            <div class="controls-section">
+                <div class="search-controls">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search members by name or email..." id="memberSearch">
+                    </div>
+                </div>
+                <div class="filter-controls">
+                    <select id="membershipFilter" class="filter-select">
+                        <option value="">All Memberships</option>
+                        <option value="basic">Basic</option>
+                        <option value="premium">Premium</option>
+                        <option value="vip">VIP</option>
+                    </select>
+                    <select id="statusFilter" class="filter-select">
+                        <option value="">All Status</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                        <option value="expired">Expired</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-header">
+                    <h3>All Members</h3>
+                    <div class="table-actions">
+                        <button class="secondary-btn">
+                            <i class="fas fa-download"></i>
+                            <span>Export</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table class="data-table" id="membersTable">
+                        <thead>
+                            <tr>
+                                <th>Member</th>
+                                <th>Contact</th>
+                                <th>Membership</th>
+                                <th>Join Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="member-info">
+                                        <div class="member-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <span class="member-name">John Smith</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contact-info">
+                                        <span class="contact-email">john.smith@email.com</span>
+                                        <span class="contact-phone">+1 234 567 8900</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge premium">Premium</span></td>
+                                <td>Jan 10, 2024</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" onclick="editMember(1)" title="Edit Member">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="viewMember(1)" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn danger" onclick="deleteMember(1)" title="Delete Member">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="member-info">
+                                        <div class="member-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <span class="member-name">Sarah Johnson</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contact-info">
+                                        <span class="contact-email">sarah.johnson@email.com</span>
+                                        <span class="contact-phone">+1 234 567 8901</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge vip">VIP</span></td>
+                                <td>Jan 5, 2024</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" onclick="editMember(2)" title="Edit Member">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="viewMember(2)" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn danger" onclick="deleteMember(2)" title="Delete Member">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="member-info">
+                                        <div class="member-avatar">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <span class="member-name">Mike Wilson</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="contact-info">
+                                        <span class="contact-email">mike.wilson@email.com</span>
+                                        <span class="contact-phone">+1 234 567 8902</span>
+                                    </div>
+                                </td>
+                                <td><span class="badge basic">Basic</span></td>
+                                <td>Jan 12, 2024</td>
+                                <td><span class="status-badge inactive">Inactive</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="action-btn" onclick="editMember(3)" title="Edit Member">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" onclick="viewMember(3)" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn danger" onclick="deleteMember(3)" title="Delete Member">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <!-- Classes Section -->
+        <section id="classes" class="content-section">
+            <div class="section-header">
+                <div class="header-info">
+                    <h1>Class Schedule</h1>
+                    <p class="header-subtitle">Manage fitness classes and schedules</p>
+                </div>
+                <button class="primary-btn" onclick="showAddClassModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Class</span>
+                </button>
+            </div>
+
+            <div class="schedule-container">
+                <div class="day-navigation">
+                    <div class="day-selector">
+                        <button class="day-btn active" data-day="monday">Mon</button>
+                        <button class="day-btn" data-day="tuesday">Tue</button>
+                        <button class="day-btn" data-day="wednesday">Wed</button>
+                        <button class="day-btn" data-day="thursday">Thu</button>
+                        <button class="day-btn" data-day="friday">Fri</button>
+                        <button class="day-btn" data-day="saturday">Sat</button>
+                        <button class="day-btn" data-day="sunday">Sun</button>
+                    </div>
+                </div>
+
+                <div class="classes-timeline" id="classesGrid">
+                    <div class="class-item">
+                        <div class="class-time-block">
+                            <span class="time">06:00</span>
+                            <span class="duration">60 min</span>
+                        </div>
+                        <div class="class-content">
+                            <div class="class-card">
+                                <div class="class-header">
+                                    <div class="class-info">
+                                        <h3>Yoga Flow</h3>
+                                        <span class="class-instructor">Sarah Johnson</span>
+                                    </div>
+                                    <div class="class-meta">
+                                        <span class="class-capacity">15/20</span>
+                                        <span class="class-location">Studio A</span>
+                                    </div>
+                                </div>
+                                <div class="class-footer">
+                                    <div class="class-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 75%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="class-actions">
+                                        <button class="action-btn" title="Edit Class">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Bookings">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="class-item">
+                        <div class="class-time-block">
+                            <span class="time">18:00</span>
+                            <span class="duration">60 min</span>
+                        </div>
+                        <div class="class-content">
+                            <div class="class-card">
+                                <div class="class-header">
+                                    <div class="class-info">
+                                        <h3>HIIT Training</h3>
+                                        <span class="class-instructor">Mike Wilson</span>
+                                    </div>
+                                    <div class="class-meta">
+                                        <span class="class-capacity">18/25</span>
+                                        <span class="class-location">Main Gym</span>
+                                    </div>
+                                </div>
+                                <div class="class-footer">
+                                    <div class="class-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 72%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="class-actions">
+                                        <button class="action-btn" title="Edit Class">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Bookings">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="class-item">
+                        <div class="class-time-block">
+                            <span class="time">19:30</span>
+                            <span class="duration">60 min</span>
+                        </div>
+                        <div class="class-content">
+                            <div class="class-card">
+                                <div class="class-header">
+                                    <div class="class-info">
+                                        <h3>Spin Class</h3>
+                                        <span class="class-instructor">Emma Davis</span>
+                                    </div>
+                                    <div class="class-meta">
+                                        <span class="class-capacity">12/30</span>
+                                        <span class="class-location">Spin Room</span>
+                                    </div>
+                                </div>
+                                <div class="class-footer">
+                                    <div class="class-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 40%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="class-actions">
+                                        <button class="action-btn" title="Edit Class">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="View Bookings">
+                                            <i class="fas fa-users"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Equipment Section -->
+        <section id="equipment" class="content-section">
+            <div class="section-header">
+                <div class="header-info">
+                    <h1>Equipment</h1>
+                    <p class="header-subtitle">Monitor and manage gym equipment</p>
+                </div>
+                <button class="primary-btn" onclick="showAddEquipmentModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Equipment</span>
+                </button>
+            </div>
+
+            <div class="equipment-overview">
+                <div class="equipment-stats">
+                    <div class="stat-card compact">
+                        <div class="stat-icon equipment">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">24</span>
+                            <span class="stat-label">Total Equipment</span>
+                        </div>
+                    </div>
+                    <div class="stat-card compact">
+                        <div class="stat-icon available">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">18</span>
+                            <span class="stat-label">Available</span>
+                        </div>
+                    </div>
+                    <div class="stat-card compact">
+                        <div class="stat-icon maintenance">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">3</span>
+                            <span class="stat-label">Maintenance</span>
+                        </div>
+                    </div>
+                    <div class="stat-card compact">
+                        <div class="stat-icon broken">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">1</span>
+                            <span class="stat-label">Needs Repair</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="equipment-categories">
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h3>Cardio Equipment</h3>
+                            <span class="category-count">8 items</span>
+                        </div>
+                        <div class="equipment-grid">
+                            <div class="equipment-card">
+                                <div class="equipment-header">
+                                    <div class="equipment-icon">
+                                        <i class="fas fa-running"></i>
+                                    </div>
+                                    <div class="equipment-status available">Available</div>
+                                </div>
+                                <div class="equipment-details">
+                                    <h4>Treadmill #1</h4>
+                                    <p class="equipment-model">Life Fitness X9</p>
+                                    <div class="equipment-meta">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Cardio Area
+                                        </span>
+                                        <span class="last-maintenance">
+                                            <i class="fas fa-calendar"></i>
+                                            2 days ago
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="equipment-actions">
+                                    <button class="action-btn" title="View Details">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <button class="action-btn" title="Schedule Maintenance">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="equipment-card">
+                                <div class="equipment-header">
+                                    <div class="equipment-icon">
+                                        <i class="fas fa-bicycle"></i>
+                                    </div>
+                                    <div class="equipment-status in-use">In Use</div>
+                                </div>
+                                <div class="equipment-details">
+                                    <h4>Stationary Bike #1</h4>
+                                    <p class="equipment-model">Precor RBK 615</p>
+                                    <div class="equipment-meta">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Cardio Area
+                                        </span>
+                                        <span class="last-maintenance">
+                                            <i class="fas fa-calendar"></i>
+                                            1 week ago
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="equipment-actions">
+                                    <button class="action-btn" title="View Details">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <button class="action-btn" title="Schedule Maintenance">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="category-section">
+                        <div class="category-header">
+                            <h3>Weight Training</h3>
+                            <span class="category-count">12 items</span>
+                        </div>
+                        <div class="equipment-grid">
+                            <div class="equipment-card">
+                                <div class="equipment-header">
+                                    <div class="equipment-icon">
+                                        <i class="fas fa-dumbbell"></i>
+                                    </div>
+                                    <div class="equipment-status available">Available</div>
+                                </div>
+                                <div class="equipment-details">
+                                    <h4>Power Rack #1</h4>
+                                    <p class="equipment-model">Rogue R-6</p>
+                                    <div class="equipment-meta">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Weight Room
+                                        </span>
+                                        <span class="last-maintenance">
+                                            <i class="fas fa-calendar"></i>
+                                            3 days ago
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="equipment-actions">
+                                    <button class="action-btn" title="View Details">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <button class="action-btn" title="Schedule Maintenance">
+                                        <i class="fas fa-wrench"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="equipment-card">
+                                <div class="equipment-header">
+                                    <div class="equipment-icon">
+                                        <i class="fas fa-weight"></i>
+                                    </div>
+                                    <div class="equipment-status maintenance">Maintenance</div>
+                                </div>
+                                <div class="equipment-details">
+                                    <h4>Dumbbells Set</h4>
+                                    <p class="equipment-model">5-50 lbs</p>
+                                    <div class="equipment-meta">
+                                        <span class="location">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            Weight Room
+                                        </span>
+                                        <span class="last-maintenance">
+                                            <i class="fas fa-calendar"></i>
+                                            Today
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="equipment-actions">
+                                    <button class="action-btn" title="View Details">
+                                        <i class="fas fa-info-circle"></i>
+                                    </button>
+                                    <button class="action-btn" title="Mark as Available">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Payments Section -->
+        <section id="payments" class="content-section">
+            <div class="section-header">
+                <div class="header-info">
+                    <h1>Payments</h1>
+                    <p class="header-subtitle">Track and manage member payments</p>
+                </div>
+                <div class="header-controls">
+                    <select id="paymentStatus" class="filter-select">
+                        <option value="">All Payments</option>
+                        <option value="completed">Completed</option>
+                        <option value="pending">Pending</option>
+                        <option value="failed">Failed</option>
+                    </select>
+                    <input type="month" id="paymentMonth" class="date-input">
+                    <button class="secondary-btn">
+                        <i class="fas fa-download"></i>
+                        <span>Export</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="payments-overview">
+                <div class="payment-stats">
+                    <div class="stat-card revenue">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Total Revenue</h3>
+                            <span class="stat-number">$45,820</span>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +8% from last month
+                            </p>
+                        </div>
+                    </div>
+                    <div class="stat-card pending">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Pending</h3>
+                            <span class="stat-number">$2,340</span>
+                            <p class="stat-change neutral">
+                                12 transactions
+                            </p>
+                        </div>
+                    </div>
+                    <div class="stat-card overdue">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Overdue</h3>
+                            <span class="stat-number">$890</span>
+                            <p class="stat-change negative">
+                                <i class="fas fa-arrow-down"></i>
+                                5 overdue payments
+                            </p>
+                        </div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>Collection Rate</h3>
+                            <span class="stat-number">94.2%</span>
+                            <p class="stat-change positive">
+                                <i class="fas fa-arrow-up"></i>
+                                +2.1% improvement
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payments-table-card">
+                    <div class="table-header">
+                        <h3>Recent Transactions</h3>
+                        <div class="table-actions">
+                            <button class="action-btn" title="Refresh">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Member</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Method</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="member-avatar small">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <span>John Smith</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="amount">$99.99</span>
+                                        <span class="payment-type">Membership</span>
+                                    </td>
+                                    <td>Jan 15, 2024</td>
+                                    <td>
+                                        <div class="payment-method">
+                                            <i class="fas fa-credit-card"></i>
+                                            <span>Credit Card</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge completed">Completed</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn" title="Download Receipt">
+                                                <i class="fas fa-download"></i>
+                                            </button>
+                                            <button class="action-btn" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="member-avatar small">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <span>Sarah Johnson</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="amount">$149.99</span>
+                                        <span class="payment-type">VIP Membership</span>
+                                    </td>
+                                    <td>Jan 14, 2024</td>
+                                    <td>
+                                        <div class="payment-method">
+                                            <i class="fas fa-university"></i>
+                                            <span>Bank Transfer</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge pending">Pending</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn success" title="Mark as Paid">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="action-btn" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="member-info">
+                                            <div class="member-avatar small">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <span>Mike Wilson</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="amount">$79.99</span>
+                                        <span class="payment-type">Basic Membership</span>
+                                    </td>
+                                    <td>Jan 13, 2024</td>
+                                    <td>
+                                        <div class="payment-method">
+                                            <i class="fas fa-credit-card"></i>
+                                            <span>Credit Card</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="status-badge failed">Failed</span>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="action-btn" title="Retry Payment">
+                                                <i class="fas fa-redo"></i>
+                                            </button>
+                                            <button class="action-btn" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Staff Section -->
+        <section id="staff" class="content-section">
+            <div class="section-header">
+                <div class="header-info">
+                    <h1>Staff</h1>
+                    <p class="header-subtitle">Manage team members and roles</p>
+                </div>
+                <button class="primary-btn" onclick="showAddStaffModal()">
+                    <i class="fas fa-plus"></i>
+                    <span>Add Staff</span>
+                </button>
+            </div>
+
+            <div class="staff-overview">
+                <div class="staff-stats">
+                    <div class="stat-card compact">
+                        <div class="stat-icon staff">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">Total Staff</span>
+                        </div>
+                    </div>
+                    <div class="stat-card compact">
+                        <div class="stat-icon active">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">8</span>
+                            <span class="stat-label">On Duty</span>
+                        </div>
+                    </div>
+                    <div class="stat-card compact">
+                        <div class="stat-icon offduty">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <span class="stat-number">4</span>
+                            <span class="stat-label">Off Duty</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="staff-grid">
+                    <div class="staff-card">
+                        <div class="staff-header">
+                            <div class="staff-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="staff-status-indicator active"></div>
+                        </div>
+                        <div class="staff-info">
+                            <h3>Mike Johnson</h3>
+                            <p class="staff-role">Head Trainer</p>
+                            <div class="staff-specialization">Fitness, Nutrition</div>
+                        </div>
+                        <div class="staff-details">
+                            <div class="staff-contact">
+                                <span class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    mike.johnson@email.com
+                                </span>
+                                <span class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    +1 234 567 8900
+                                </span>
+                            </div>
+                            <div class="staff-schedule">
+                                <span class="schedule-label">Next Shift:</span>
+                                <span class="schedule-time">Today 2:00 PM - 10:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="staff-actions">
+                            <button class="action-btn" title="Edit Staff">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="View Schedule">
+                                <i class="fas fa-calendar"></i>
+                            </button>
+                            <button class="action-btn" title="Contact">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-header">
+                            <div class="staff-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="staff-status-indicator active"></div>
+                        </div>
+                        <div class="staff-info">
+                            <h3>Sarah Williams</h3>
+                            <p class="staff-role">Yoga Instructor</p>
+                            <div class="staff-specialization">Yoga, Pilates, Meditation</div>
+                        </div>
+                        <div class="staff-details">
+                            <div class="staff-contact">
+                                <span class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    sarah.williams@email.com
+                                </span>
+                                <span class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    +1 234 567 8901
+                                </span>
+                            </div>
+                            <div class="staff-schedule">
+                                <span class="schedule-label">Next Shift:</span>
+                                <span class="schedule-time">Tomorrow 6:00 AM - 2:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="staff-actions">
+                            <button class="action-btn" title="Edit Staff">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="View Schedule">
+                                <i class="fas fa-calendar"></i>
+                            </button>
+                            <button class="action-btn" title="Contact">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="staff-card">
+                        <div class="staff-header">
+                            <div class="staff-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="staff-status-indicator off-duty"></div>
+                        </div>
+                        <div class="staff-info">
+                            <h3>David Brown</h3>
+                            <p class="staff-role">Front Desk</p>
+                            <div class="staff-specialization">Customer Service</div>
+                        </div>
+                        <div class="staff-details">
+                            <div class="staff-contact">
+                                <span class="contact-item">
+                                    <i class="fas fa-envelope"></i>
+                                    david.brown@email.com
+                                </span>
+                                <span class="contact-item">
+                                    <i class="fas fa-phone"></i>
+                                    +1 234 567 8902
+                                </span>
+                            </div>
+                            <div class="staff-schedule">
+                                <span class="schedule-label">Next Shift:</span>
+                                <span class="schedule-time">Off today</span>
+                            </div>
+                        </div>
+                        <div class="staff-actions">
+                            <button class="action-btn" title="Edit Staff">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="View Schedule">
+                                <i class="fas fa-calendar"></i>
+                            </button>
+                            <button class="action-btn" title="Contact">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Reports Section -->
+        <section id="reports" class="content-section">
+            <div class="section-header">
+                <div class="header-info">
+                    <h1>Analytics</h1>
+                    <p class="header-subtitle">Insights and performance metrics</p>
+                </div>
+                <div class="header-controls">
+                    <select id="reportType" class="filter-select">
+                        <option value="membership">Membership Report</option>
+                        <option value="revenue">Revenue Report</option>
+                        <option value="attendance">Attendance Report</option>
+                        <option value="equipment">Equipment Usage</option>
+                    </select>
+                    <input type="month" id="reportPeriod" class="date-input">
+                    <button class="primary-btn" onclick="generateReport()">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Generate Report</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="reports-overview">
+                <div class="metrics-grid">
+                    <div class="metric-card primary">
+                        <div class="metric-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>Active Members</h3>
+                            <span class="metric-value">1,247</span>
+                            <div class="metric-trend">
+                                <span class="trend-value positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +12%
+                                </span>
+                                <span class="trend-period">vs last month</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metric-card success">
+                        <div class="metric-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>Avg Session Duration</h3>
+                            <span class="metric-value">68 min</span>
+                            <div class="metric-trend">
+                                <span class="trend-value positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +5 min
+                                </span>
+                                <span class="trend-period">vs last month</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metric-card warning">
+                        <div class="metric-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>Member Retention</h3>
+                            <span class="metric-value">94.2%</span>
+                            <div class="metric-trend">
+                                <span class="trend-value positive">
+                                    <i class="fas fa-arrow-up"></i>
+                                    +2.1%
+                                </span>
+                                <span class="trend-period">vs last month</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="metric-card info">
+                        <div class="metric-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="metric-content">
+                            <h3>Revenue per Member</h3>
+                            <span class="metric-value">$36.75</span>
+                            <div class="metric-trend">
+                                <span class="trend-value neutral">
+                                    <i class="fas fa-minus"></i>
+                                    0%
+                                </span>
+                                <span class="trend-period">vs last month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <div class="chart-card large">
+                        <div class="chart-header">
+                            <h3>Member Growth Trend</h3>
+                            <div class="chart-controls">
+                                <button class="chart-btn active">12M</button>
+                                <button class="chart-btn">6M</button>
+                                <button class="chart-btn">3M</button>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="memberGrowthChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card large">
+                        <div class="chart-header">
+                            <h3>Class Popularity</h3>
+                            <div class="chart-legend">
+                                <div class="legend-item">
+                                    <div class="legend-color" style="background: #667eea"></div>
+                                    <span>Booking Rate</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="classPopularityChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insights-section">
+                    <div class="insights-card">
+                        <div class="insights-header">
+                            <h3>Top Performing Classes</h3>
+                            <button class="view-all-btn">View All</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Class Name</th>
+                                        <th>Bookings</th>
+                                        <th>Avg Attendance</th>
+                                        <th>Rating</th>
+                                        <th>Revenue</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="class-info">
+                                                <div class="class-icon">
+                                                    <i class="fas fa-running"></i>
+                                                </div>
+                                                <span>HIIT Training</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="metric">156</span>
+                                            <span class="metric-label">bookings</span>
+                                        </td>
+                                        <td>
+                                            <span class="metric">89%</span>
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill" style="width: 89%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <span class="rating-value">4.8</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="revenue">$4,680</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="class-info">
+                                                <div class="class-icon">
+                                                    <i class="fas fa-leaf"></i>
+                                                </div>
+                                                <span>Yoga Flow</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="metric">142</span>
+                                            <span class="metric-label">bookings</span>
+                                        </td>
+                                        <td>
+                                            <span class="metric">92%</span>
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill" style="width: 92%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <span class="rating-value">4.9</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="revenue">$4,260</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="class-info">
+                                                <div class="class-icon">
+                                                    <i class="fas fa-bicycle"></i>
+                                                </div>
+                                                <span>Spin Class</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="metric">128</span>
+                                            <span class="metric-label">bookings</span>
+                                        </td>
+                                        <td>
+                                            <span class="metric">85%</span>
+                                            <div class="progress-bar small">
+                                                <div class="progress-fill" style="width: 85%"></div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="far fa-star"></i>
+                                                <span class="rating-value">4.2</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="revenue">$3,840</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="insights-card">
+                        <div class="insights-header">
+                            <h3>Key Insights</h3>
+                        </div>
+                        <div class="insights-list">
+                            <div class="insight-item positive">
+                                <div class="insight-icon">
+                                    <i class="fas fa-arrow-trend-up"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <h4>Membership Growth</h4>
+                                    <p>Premium memberships increased by 15% this month</p>
+                                </div>
+                            </div>
+                            <div class="insight-item positive">
+                                <div class="insight-icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <h4>Peak Hours</h4>
+                                    <p>Morning classes (6-8 AM) have highest attendance</p>
+                                </div>
+                            </div>
+                            <div class="insight-item warning">
+                                <div class="insight-icon">
+                                    <i class="fas fa-tools"></i>
+                                </div>
+                                <div class="insight-content">
+                                    <h4>Equipment Usage</h4>
+                                    <p>Treadmills are at 95% capacity during peak hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Member</h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-content" id="modalContent">
+                <!-- Dynamic modal content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

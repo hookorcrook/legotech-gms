@@ -1,0 +1,43 @@
+/* Theme variables (edit to customize brand colors) */
+:root {
+  --primary-500: #ef4444; /* Tailwind red-500 */
+  --secondary-500: #334155; /* Tailwind slate-500 */
+}
+
+/* Utilities */
+::selection {
+  background: var(--primary-500);
+  color: #fff;
+}
+
+/* Smooth focus */
+:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* Hide default number spinners where needed */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { -moz-appearance: textfield; }
+
+/* Mobile nav transition */
+#mobileMenu {
+  transition: max-height .25s ease, opacity .2s ease;
+}
+#mobileMenu.show {
+  display: block;
+}
+
+/* Counter animation respects reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
